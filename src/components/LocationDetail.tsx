@@ -30,7 +30,6 @@ export const LocationDetails: React.FC<{ location: LocationType; removeLocationD
     setIsEditMode((prevMode) => !prevMode);
 
     try {
-      console.log(location.id);
       await updateLocation({
         locationUpdateId: location.id,
         requestBody: {
@@ -44,15 +43,10 @@ export const LocationDetails: React.FC<{ location: LocationType; removeLocationD
         tenant: import.meta.env.VITE_TENANT,
       });
 
-      console.log('Location updated successfully!', name, address, npi, taxId, alias);
+      console.log('Location updated successfully!');
     } catch (error) {
       console.error('Error updating location:', error);
     }
-  };
-
-  const handleSaveAlias = () => {
-    const tags = alias && alias.split(',').map((tag) => tag.trim());
-    console.log(tags);
   };
 
   const handleDeleteLocation = async () => {
@@ -68,7 +62,7 @@ export const LocationDetails: React.FC<{ location: LocationType; removeLocationD
   return (
     <div className='flex flex-col w-full h-full p-10'>
       <div className='flex items-center justify-between'>
-        <button className='bg-teal-700 text-white px-4 py-2 rounded' onClick={() => console.log('Refresh')}>
+        <button className='bg-teal-700 text-white px-4 py-2 rounded' onClick={() => console.log('TO BE IMPLEMENTED')}>
           Refresh
         </button>
         <div className='space-x-4'>
@@ -89,13 +83,7 @@ export const LocationDetails: React.FC<{ location: LocationType; removeLocationD
 
       <div className='flex flex-col items-center mt-24'>
         {isEditMode ? (
-          <input
-            type='text'
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            onBlur={() => console.log('Saving name:', name)}
-            className='text-2xl font-bold w-full'
-          />
+          <input type='text' value={name} onChange={(e) => setName(e.target.value)} className='text-2xl font-bold w-full' />
         ) : (
           <h2 className='text-2xl font-bold'>{name}</h2>
         )}
@@ -127,7 +115,7 @@ export const LocationDetails: React.FC<{ location: LocationType; removeLocationD
         <div className='mb-2'>
           <p className='mb-2'>Alias:</p>
           {isEditMode ? (
-            <input type='text' value={alias} onChange={(e) => setAlias(e.target.value)} onBlur={handleSaveAlias} className='w-full' />
+            <input type='text' value={alias} onChange={(e) => setAlias(e.target.value)} className='w-full' />
           ) : (
             <div className='flex flex-wrap gap-2'>
               {alias &&

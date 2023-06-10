@@ -14,7 +14,6 @@ function App() {
   const removeLocationDetails = useCallback(() => setLocation(null), []);
 
   const locationDetails = useMemo(() => {
-    console.log(location);
     return location ? (
       <LocationDetails location={location} removeLocationDetails={removeLocationDetails} />
     ) : (

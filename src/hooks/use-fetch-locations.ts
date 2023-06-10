@@ -11,8 +11,6 @@ export const useLazyFetchLocations = () => {
   };
 
   useEffect(() => {
-    console.log('use effect');
-
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const listContainer = document.querySelector('.location-list-container')!;
 

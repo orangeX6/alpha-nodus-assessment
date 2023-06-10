@@ -13,7 +13,6 @@ export const LocationList: React.FC<{ handleLocationClick: (location: LocationTy
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleOpenDialog = () => {
-    console.log(isDialogOpen);
     setIsDialogOpen((prev) => !prev);
   };
 

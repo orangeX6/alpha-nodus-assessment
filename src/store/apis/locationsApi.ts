@@ -63,7 +63,6 @@ const locationsApi = createApi({
         return endpointName;
       },
       merge: (currentCache: CurrentLocations, newItems: CurrentLocations, { arg }) => {
-        console.log(currentCache.locationList.resources.length, newItems.locationList.resources.length);
         // if (currentCache.locationList.resources.length !== newItems.locationList.resources.length) {
         //   return newItems;
         // }
