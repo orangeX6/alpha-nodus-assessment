@@ -1,9 +1,34 @@
-// import { useFetchLocationsQuery } from '../store';
+import { useState } from 'react';
 import { LocationType } from '../types/location-type';
 import { useLazyFetchLocations } from '../hooks';
+import { LocationFormDialog } from './LocationFormDialog';
+import { useCreateLocationMutation } from '../store';
 
 export const LocationList: React.FC<{ handleLocationClick: (location: LocationType) => void }> = ({ handleLocationClick }) => {
   const { data, error, isFetching, refetch } = useLazyFetchLocations();
+  const [createLocation] = useCreateLocationMutation();
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleOpenDialog = () => {
+    console.log(isDialogOpen);
+    setIsDialogOpen((prev) => !prev);
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+  };
+
+  const handleSaveLocation = async (locationData: Omit<LocationType, 'id' | 'tenant' | 'updatedAt'>) => {
+    // Perform save logic here
+    try {
+      await createLocation({ requestBody: locationData, tenant: import.meta.env.VITE_TENANT });
+
+      console.log('Location data:', locationData);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   let locations;
 
@@ -36,12 +61,13 @@ export const LocationList: React.FC<{ handleLocationClick: (location: LocationTy
           </span>
         </button>
         <h1 className='text-2xl font-bold'>Locations</h1>
-        <button className='border border-gray-400 rounded px-4 py-2 flex-grow-0' onClick={refetch}>
+        <button className='border border-gray-400 rounded px-4 py-2 flex-grow-0' onClick={handleOpenDialog}>
           +
         </button>
       </div>
 
       <div className='h-80vh overflow-y-scroll p-10 location-list-container'>{locations}</div>
+      <LocationFormDialog open={isDialogOpen} onClose={handleCloseDialog} onSave={handleSaveLocation} />
     </>
   );
 };

@@ -1,6 +1,6 @@
 import { useState, useEffect, ChangeEvent } from 'react';
 import { LocationType } from '../types/location-type';
-import { useUpdateLocationMutation } from '../store/apis/locationsApi';
+import { useUpdateLocationMutation } from '../store';
 
 export const LocationDetails: React.FC<{ location: LocationType }> = ({ location }) => {
   const [updateLocation] = useUpdateLocationMutation();

@@ -31,4 +31,9 @@ export function setupStore(preloadedState?: PreloadedState<RootState>) {
 
 setupListeners(store.dispatch);
 
-export { useFetchLocationsQuery, useLazyFetchLocationsQuery } from './apis/locationsApi.ts';
+export {
+  useFetchLocationsQuery,
+  useLazyFetchLocationsQuery,
+  useCreateLocationMutation,
+  useUpdateLocationMutation,
+} from './apis/locationsApi.ts';

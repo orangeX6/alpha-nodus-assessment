@@ -82,6 +82,23 @@ const locationsApi = createApi({
         if (previousArg) return currentArg.page !== previousArg.page;
       },
     }),
+    CreateLocation: builder.mutation({
+      query: ({ requestBody, tenant }) => ({
+        document: gql`
+          mutation LocationCreate($requestBody: LocationWriteInput!, $tenant: String!) {
+            locationCreate(requestBody: $requestBody, tenant: $tenant) {
+              resourceID
+            }
+          }
+        `,
+        variables: {
+          requestBody: requestBody,
+          tenant: tenant,
+        },
+        refetchQueries: ['FetchLocations'],
+      }),
+    }),
+
     UpdateLocation: builder.mutation({
       query: ({ locationUpdateId, requestBody, tenant }) => ({
         document: gql`
@@ -103,4 +120,4 @@ const locationsApi = createApi({
 });
 
 export { locationsApi };
-export const { useFetchLocationsQuery, useLazyFetchLocationsQuery, useUpdateLocationMutation } = locationsApi;
+export const { useFetchLocationsQuery, useLazyFetchLocationsQuery, useUpdateLocationMutation, useCreateLocationMutation } = locationsApi;
