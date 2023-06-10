@@ -6,6 +6,10 @@ export const useLazyFetchLocations = () => {
 
   const [getLocations, { data, error, isFetching }] = useLazyFetchLocationsQuery();
 
+  const refetch = () => {
+    setPage(0);
+  };
+
   useEffect(() => {
     console.log('use effect');
 
@@ -34,5 +38,5 @@ export const useLazyFetchLocations = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
-  return { data, error, isFetching };
+  return { data, error, isFetching, refetch };
 };

@@ -11,6 +11,7 @@ export const LocationDetails: React.FC<{ location: LocationType }> = ({ location
   const [npi, setNpi] = useState(location.npi);
   const [taxId, setTaxId] = useState(location.taxId);
   const [alias, setAlias] = useState(location.alias);
+  const [status, setStatus] = useState(location.status);
 
   useEffect(() => {
     setName(location.name);
@@ -18,6 +19,7 @@ export const LocationDetails: React.FC<{ location: LocationType }> = ({ location
     setNpi(location.npi);
     setTaxId(location.taxId);
     setAlias(location.alias);
+    setStatus(location.status);
   }, [location]);
 
   const handleEditSave = async () => {
@@ -33,6 +35,7 @@ export const LocationDetails: React.FC<{ location: LocationType }> = ({ location
           npi,
           taxId,
           alias,
+          status,
         },
         tenant: import.meta.env.VITE_TENANT,
       });
@@ -124,6 +127,18 @@ export const LocationDetails: React.FC<{ location: LocationType }> = ({ location
                   </span>
                 ))}
             </div>
+          )}
+        </div>
+
+        <div className='mb-2'>
+          <p className='mb-2'>Status:</p>
+          {isEditMode ? (
+            <select value={status} onChange={(e) => setStatus(e.target.value)} className='w-full'>
+              <option value='active'>Active</option>
+              <option value='inactive'>Inactive</option>
+            </select>
+          ) : (
+            <p>{status}</p>
           )}
         </div>
       </div>

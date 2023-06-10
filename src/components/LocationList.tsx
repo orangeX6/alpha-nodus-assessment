@@ -3,7 +3,7 @@ import { LocationType } from '../types/location-type';
 import { useLazyFetchLocations } from '../hooks';
 
 export const LocationList: React.FC<{ handleLocationClick: (location: LocationType) => void }> = ({ handleLocationClick }) => {
-  const { data, error, isFetching } = useLazyFetchLocations();
+  const { data, error, isFetching, refetch } = useLazyFetchLocations();
 
   let locations;
 
@@ -29,6 +29,18 @@ export const LocationList: React.FC<{ handleLocationClick: (location: LocationTy
 
   return (
     <>
+      <div className='flex items-center justify-between py-5'>
+        <button className='border border-gray-400 rounded px-4 py-2 flex-grow-0' onClick={refetch}>
+          <span role='img' aria-label='Refresh'>
+            🔃
+          </span>
+        </button>
+        <h1 className='text-2xl font-bold'>Locations</h1>
+        <button className='border border-gray-400 rounded px-4 py-2 flex-grow-0' onClick={refetch}>
+          +
+        </button>
+      </div>
+
       <div className='h-80vh overflow-y-scroll p-10 location-list-container'>{locations}</div>
     </>
   );

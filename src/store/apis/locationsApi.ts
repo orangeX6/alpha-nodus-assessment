@@ -61,11 +61,15 @@ const locationsApi = createApi({
       serializeQueryArgs: ({ endpointName }) => {
         return endpointName;
       },
-      merge: (currentCache: CurrentLocations, newItems: CurrentLocations) => {
+      merge: (currentCache: CurrentLocations, newItems: CurrentLocations, { arg }) => {
         console.log(currentCache.locationList.resources.length, newItems.locationList.resources.length);
         // if (currentCache.locationList.resources.length !== newItems.locationList.resources.length) {
         //   return newItems;
         // }
+        if (arg.page === 0) {
+          return newItems;
+        }
+
         if (newItems.locationList.pages === 0) {
           return newItems;
         }
