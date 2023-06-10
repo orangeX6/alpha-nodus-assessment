@@ -1,9 +1,13 @@
 import { useState, useEffect, ChangeEvent } from 'react';
 import { LocationType } from '../types/location-type';
-import { useUpdateLocationMutation } from '../store';
+import { useUpdateLocationMutation, useRemoveLocationMutation } from '../store';
 
-export const LocationDetails: React.FC<{ location: LocationType }> = ({ location }) => {
+export const LocationDetails: React.FC<{ location: LocationType; removeLocationDetails: () => void }> = ({
+  location,
+  removeLocationDetails,
+}) => {
   const [updateLocation] = useUpdateLocationMutation();
+  const [removeLocation] = useRemoveLocationMutation();
 
   const [isEditMode, setIsEditMode] = useState(false);
   const [name, setName] = useState(location.name);
@@ -51,8 +55,14 @@ export const LocationDetails: React.FC<{ location: LocationType }> = ({ location
     console.log(tags);
   };
 
-  const handleDeleteLocation = () => {
-    console.log('Deleting location:', location.id);
+  const handleDeleteLocation = async () => {
+    try {
+      await removeLocation({ id: location.id, tenant: import.meta.env.VITE_TENANT });
+      console.log('Location removed successfully.');
+      removeLocationDetails();
+    } catch (error) {
+      console.error('Error removing location:', error);
+    }
   };
 
   return (

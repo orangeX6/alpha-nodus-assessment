@@ -116,8 +116,31 @@ const locationsApi = createApi({
         refetchQueries: ['FetchLocations'],
       }),
     }),
+
+    RemoveLocation: builder.mutation({
+      query: ({ id, tenant }) => ({
+        document: gql`
+          mutation LocationRemove($id: String!, $tenant: String!) {
+            locationRemove(id: $id, tenant: $tenant) {
+              resourceID
+            }
+          }
+        `,
+        variables: {
+          id,
+          tenant,
+        },
+        refetchQueries: ['FetchLocations'],
+      }),
+    }),
   }),
 });
 
 export { locationsApi };
-export const { useFetchLocationsQuery, useLazyFetchLocationsQuery, useUpdateLocationMutation, useCreateLocationMutation } = locationsApi;
+export const {
+  useFetchLocationsQuery,
+  useLazyFetchLocationsQuery,
+  useUpdateLocationMutation,
+  useCreateLocationMutation,
+  useRemoveLocationMutation,
+} = locationsApi;

@@ -36,4 +36,5 @@ export {
   useLazyFetchLocationsQuery,
   useCreateLocationMutation,
   useUpdateLocationMutation,
+  useRemoveLocationMutation,
 } from './apis/locationsApi.ts';

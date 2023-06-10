@@ -11,9 +11,16 @@ function App() {
     setLocation(selectedLocation);
   }, []);
 
+  const removeLocationDetails = useCallback(() => setLocation(null), []);
+
   const locationDetails = useMemo(() => {
     console.log(location);
-    return location ? <LocationDetails location={location} /> : <p className='text-lg mx-auto'>Click on the Card to get more details</p>;
+    return location ? (
+      <LocationDetails location={location} removeLocationDetails={removeLocationDetails} />
+    ) : (
+      <p className='text-lg mx-auto'>Click on the Card to get more details</p>
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
   return (
