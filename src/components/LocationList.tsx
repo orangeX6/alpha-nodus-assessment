@@ -1,10 +1,16 @@
-import { useFetchLocationsQuery } from '../store';
+// import { useFetchLocationsQuery } from '../store';
 import { LocationType } from '../types/location-type';
+import { useLazyFetchLocations } from '../hooks';
 
 export const LocationList: React.FC<{ handleLocationClick: (location: LocationType) => void }> = ({ handleLocationClick }) => {
-  const { data, error, isFetching } = useFetchLocationsQuery({ tenant: import.meta.env.VITE_TENANT });
+  const { data, error, isFetching } = useLazyFetchLocations();
 
   let locations;
+
+  if (isFetching) {
+    locations = <p>Loading...</p>;
+  }
+
   if (data) {
     locations = data.locationList.resources.map((el: LocationType) => (
       <div className='border rounded p-4 mb-4 relative' key={el.id} onClick={() => handleLocationClick(el)}>
@@ -23,7 +29,7 @@ export const LocationList: React.FC<{ handleLocationClick: (location: LocationTy
 
   return (
     <>
-      <div className='h-80vh overflow-y-scroll p-10'>{locations}</div>;
+      <div className='h-80vh overflow-y-scroll p-10 location-list-container'>{locations}</div>
     </>
   );
 };

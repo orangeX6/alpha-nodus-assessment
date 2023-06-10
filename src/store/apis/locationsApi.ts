@@ -1,8 +1,16 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { gql } from 'graphql-request';
 import { graphqlRequestBaseQuery } from '@rtk-query/graphql-request-base-query';
+import { LocationType } from '../../types/location-type';
 
 export const baseURL = 'https://graph.dev.jit.care/graphql';
+
+interface CurrentLocations {
+  locationList: {
+    resources: LocationType[];
+    pages: number;
+  };
+}
 
 const locationsApi = createApi({
   reducerPath: 'locationsList',
@@ -15,10 +23,10 @@ const locationsApi = createApi({
   }),
   endpoints: (builder) => ({
     FetchLocations: builder.query({
-      query: ({ tenant }) => ({
+      query: ({ tenant, page }) => ({
         document: gql`
-          query FetchLocations($tenant: String!) {
-            locationList(tenant: $tenant) {
+          query FetchLocations($tenant: String!, $page: Int) {
+            locationList(tenant: $tenant, page: $page) {
               resources {
                 address
                 alias
@@ -41,13 +49,34 @@ const locationsApi = createApi({
                 }
                 tenant
               }
+              pages
             }
           }
         `,
         variables: {
           tenant,
+          page,
         },
       }),
+      serializeQueryArgs: ({ endpointName }) => {
+        return endpointName;
+      },
+      merge: (currentCache: CurrentLocations, newItems: CurrentLocations) => {
+        console.log(currentCache.locationList.resources.length, newItems.locationList.resources.length);
+        // if (currentCache.locationList.resources.length !== newItems.locationList.resources.length) {
+        //   return newItems;
+        // }
+        if (newItems.locationList.pages === 0) {
+          return newItems;
+        }
+        currentCache.locationList.resources.push(...newItems.locationList.resources);
+        return currentCache;
+      },
+      /* eslint-disable */
+      // @ts-ignore
+      forceRefetch({ currentArg, previousArg }) {
+        if (previousArg) return currentArg.page !== previousArg.page;
+      },
     }),
     UpdateLocation: builder.mutation({
       query: ({ locationUpdateId, requestBody, locationUpdateTenant2 }) => ({

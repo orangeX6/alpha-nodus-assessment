@@ -16,6 +16,8 @@ export const store = configureStore({
 });
 
 export type RootState = ReturnType<typeof store.getState>;
+export type AppStore = ReturnType<typeof setupStore>;
+export type AppDispatch = AppStore['dispatch'];
 
 export function setupStore(preloadedState?: PreloadedState<RootState>) {
   return configureStore({
@@ -29,4 +31,4 @@ export function setupStore(preloadedState?: PreloadedState<RootState>) {
 
 setupListeners(store.dispatch);
 
-export { useFetchLocationsQuery } from './apis/locationsApi.ts';
+export { useFetchLocationsQuery, useLazyFetchLocationsQuery } from './apis/locationsApi.ts';
