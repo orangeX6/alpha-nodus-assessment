@@ -1,8 +1,10 @@
 import { useState, useEffect, ChangeEvent } from 'react';
 import { LocationType } from '../types/location-type';
+import { useUpdateLocationMutation } from '../store/apis/locationsApi';
 
 export const LocationDetails: React.FC<{ location: LocationType }> = ({ location }) => {
-  console.log(location);
+  const [updateLocation] = useUpdateLocationMutation();
+
   const [isEditMode, setIsEditMode] = useState(false);
   const [name, setName] = useState(location.name);
   const [address, setAddress] = useState(location.address);
@@ -18,8 +20,27 @@ export const LocationDetails: React.FC<{ location: LocationType }> = ({ location
     setAlias(location.alias);
   }, [location]);
 
-  const handleEditSave = () => {
+  const handleEditSave = async () => {
     setIsEditMode((prevMode) => !prevMode);
+
+    try {
+      console.log(location.id);
+      await updateLocation({
+        locationUpdateId: location.id,
+        requestBody: {
+          name,
+          address,
+          npi,
+          taxId,
+          alias,
+        },
+        tenant: import.meta.env.VITE_TENANT,
+      });
+
+      console.log('Location updated successfully!', name, address, npi, taxId, alias);
+    } catch (error) {
+      console.error('Error updating location:', error);
+    }
   };
 
   const handleSaveAlias = () => {
@@ -75,13 +96,7 @@ export const LocationDetails: React.FC<{ location: LocationType }> = ({ location
         <div className='mb-2'>
           <p className='mb-2'>Address:</p>
           {isEditMode ? (
-            <input
-              type='text'
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              onBlur={() => console.log('Saving address:', address)}
-              className='w-full'
-            />
+            <input type='text' value={address} onChange={(e) => setAddress(e.target.value)} className='w-full' />
           ) : (
             <p>{address}</p>
           )}
@@ -89,32 +104,12 @@ export const LocationDetails: React.FC<{ location: LocationType }> = ({ location
 
         <div className='mb-2'>
           <p className='mb-2'>NPI:</p>
-          {isEditMode ? (
-            <input
-              type='text'
-              value={npi}
-              onChange={(e) => setNpi(e.target.value)}
-              onBlur={() => console.log('Saving NPI:', npi)}
-              className='w-full'
-            />
-          ) : (
-            <p>{npi}</p>
-          )}
+          {isEditMode ? <input type='text' value={npi} onChange={(e) => setNpi(e.target.value)} className='w-full' /> : <p>{npi}</p>}
         </div>
 
         <div className='mb-2'>
           <p className='mb-2'>Tax ID:</p>
-          {isEditMode ? (
-            <input
-              type='text'
-              value={taxId}
-              onChange={(e) => setTaxId(e.target.value)}
-              onBlur={() => console.log('Saving tax ID:', taxId)}
-              className='w-full'
-            />
-          ) : (
-            <p>{taxId}</p>
-          )}
+          {isEditMode ? <input type='text' value={taxId} onChange={(e) => setTaxId(e.target.value)} className='w-full' /> : <p>{taxId}</p>}
         </div>
         <div className='mb-2'>
           <p className='mb-2'>Alias:</p>

@@ -79,10 +79,10 @@ const locationsApi = createApi({
       },
     }),
     UpdateLocation: builder.mutation({
-      query: ({ locationUpdateId, requestBody, locationUpdateTenant2 }) => ({
+      query: ({ locationUpdateId, requestBody, tenant }) => ({
         document: gql`
-          mutation UpdateLocation($locationUpdateId: String!, $requestBody: LocationWriteInput!, $locationUpdateTenant2: String!) {
-            locationUpdate(id: $locationUpdateId, requestBody: $requestBody, tenant: $locationUpdateTenant2) {
+          mutation UpdateLocation($locationUpdateId: String!, $requestBody: LocationWriteInput!, $tenant: String!) {
+            locationUpdate(id: $locationUpdateId, requestBody: $requestBody, tenant: $tenant) {
               resourceID
             }
           }
@@ -90,8 +90,9 @@ const locationsApi = createApi({
         variables: {
           locationUpdateId,
           requestBody,
-          locationUpdateTenant2,
+          tenant,
         },
+        refetchQueries: ['FetchLocations'],
       }),
     }),
   }),
