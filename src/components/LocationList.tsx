@@ -7,7 +7,7 @@ export const LocationList: React.FC<{ handleLocationClick: (location: LocationTy
   let locations;
   if (data) {
     locations = data.locationList.resources.map((el: LocationType) => (
-      <div className='border rounded p-4 mb-4 relative' id={el.id} onClick={() => handleLocationClick(el)}>
+      <div className='border rounded p-4 mb-4 relative' key={el.id} onClick={() => handleLocationClick(el)}>
         <p className='text-lg font-bold'>Title: {el.name}</p>
         {el.status && <span className='bg-yellow-500 text-red-950 text-xs m-5 px-2 rounded-full absolute top-0 right-0'>{el.status}</span>}
         <p className='text-sm font-medium mb-2 text-gray-300'>Address: {el.address}</p>

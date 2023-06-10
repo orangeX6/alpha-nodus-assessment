@@ -1,7 +1,8 @@
-import { useState, ChangeEvent } from 'react';
+import { useState, useEffect, ChangeEvent } from 'react';
 import { LocationType } from '../types/location-type';
 
 export const LocationDetails: React.FC<{ location: LocationType }> = ({ location }) => {
+  console.log(location);
   const [isEditMode, setIsEditMode] = useState(false);
   const [name, setName] = useState(location.name);
   const [address, setAddress] = useState(location.address);
@@ -9,12 +10,20 @@ export const LocationDetails: React.FC<{ location: LocationType }> = ({ location
   const [taxId, setTaxId] = useState(location.taxId);
   const [alias, setAlias] = useState(location.alias);
 
+  useEffect(() => {
+    setName(location.name);
+    setAddress(location.address);
+    setNpi(location.npi);
+    setTaxId(location.taxId);
+    setAlias(location.alias);
+  }, [location]);
+
   const handleEditSave = () => {
     setIsEditMode((prevMode) => !prevMode);
   };
 
   const handleSaveAlias = () => {
-    const tags = alias.split(',').map((tag) => tag.trim());
+    const tags = alias && alias.split(',').map((tag) => tag.trim());
     console.log(tags);
   };
 
