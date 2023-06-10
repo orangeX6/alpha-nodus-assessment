@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { LocationFilter } from './LocationFilter';
+import { LocationFormDialog } from './LocationFormDialog';
+
 import { LocationType } from '../types/location-type';
 import { useLazyFetchLocations } from '../hooks';
-import { LocationFormDialog } from './LocationFormDialog';
 import { useCreateLocationMutation } from '../store';
 
 export const LocationList: React.FC<{ handleLocationClick: (location: LocationType) => void }> = ({ handleLocationClick }) => {
@@ -64,6 +66,9 @@ export const LocationList: React.FC<{ handleLocationClick: (location: LocationTy
         <button className='border border-gray-400 rounded px-4 py-2 flex-grow-0' onClick={handleOpenDialog}>
           +
         </button>
+      </div>
+      <div>
+        <LocationFilter />
       </div>
 
       <div className='h-80vh overflow-y-scroll p-10 location-list-container'>{locations}</div>

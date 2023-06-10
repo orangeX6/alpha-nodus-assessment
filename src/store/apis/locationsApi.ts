@@ -23,10 +23,10 @@ const locationsApi = createApi({
   }),
   endpoints: (builder) => ({
     FetchLocations: builder.query({
-      query: ({ tenant, page }) => ({
+      query: ({ tenant, page, status }) => ({
         document: gql`
-          query FetchLocations($tenant: String!, $page: Int) {
-            locationList(tenant: $tenant, page: $page) {
+          query FetchLocations($tenant: String!, $page: Int, $status: String) {
+            locationList(tenant: $tenant, page: $page, status: $status) {
               resources {
                 address
                 alias
@@ -56,6 +56,7 @@ const locationsApi = createApi({
         variables: {
           tenant,
           page,
+          status,
         },
       }),
       serializeQueryArgs: ({ endpointName }) => {
